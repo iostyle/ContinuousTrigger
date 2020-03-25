@@ -16,8 +16,10 @@ Step 2. Add the dependency
 	}
   
 ## Method
-|方法|描述|
+|属性/方法|描述|
 |--|--|
+|id|唯一标识符，用来注册/绑定触发器|
+|timeout|超时时间，当前节点超时时间内没有attach将跳转到下一节点，默认值为-1|
 |with|Builder模式构造注册|
 |create|Builder模式创建实例并初始化|
 |register|实例化方式有序注册|
@@ -27,7 +29,6 @@ Step 2. Add the dependency
 |response|响应并关闭超时线程|
 |clear|清空|
 
-  
 ## Example
 ```
       trigger = ContinuousTrigger.Builder()
