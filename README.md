@@ -1,6 +1,8 @@
 ![](https://github.com/iostyle/ImageRepo/blob/master/icon_continuous_trigger.png)
 # ContinuousTrigger [![](https://jitpack.io/v/iostyle/ContinuousTrigger.svg)](https://jitpack.io/#iostyle/ContinuousTrigger)
-用于按序执行一系列任务，可随时绑定（如接口返回），可对每个步骤设置超时响应时间。
+用于按序执行一系列任务，可随时绑定（如接口返回），可对每个步骤设置超时响应时间。 
+
+可以将项目clone下来，里面有demo可以修改及测试，喜欢请Star⭐️
 
 Step 1. Add it in your root build.gradle at the end of repositories:
 
