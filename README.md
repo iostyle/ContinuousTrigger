@@ -1,3 +1,4 @@
+![](https://github.com/iostyle/ImageRepo/blob/master/icon_continuous_trigger.png)
 # ContinuousTrigger [![](https://jitpack.io/v/iostyle/ContinuousTrigger.svg)](https://jitpack.io/#iostyle/ContinuousTrigger)
 多线程连续触发器 
 
