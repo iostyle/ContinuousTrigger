@@ -67,7 +67,8 @@ Step 2. Add the dependency
                         Trigger().also {
                             it.id = "test3"
                         })
-                        
+              
+//这里举一个按序弹窗的例子，也许这些弹窗所需数据来自不同的接口，你可以在任何位置任何时候attach，触发器会按注册顺序执行
        trigger?.attach("test3", object : Trigger.Strike {
             override fun strike() {
                 trigger?.response()
