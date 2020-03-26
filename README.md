@@ -1,5 +1,8 @@
+![](https://github.com/iostyle/ImageRepo/blob/master/icon_continuous_trigger.png)
 # ContinuousTrigger [![](https://jitpack.io/v/iostyle/ContinuousTrigger.svg)](https://jitpack.io/#iostyle/ContinuousTrigger)
-多线程连续触发器 
+用于按序执行一系列任务，可随时绑定（如接口返回），可对每个步骤设置超时响应时间。 
+
+可以将项目clone下来，里面有demo可以修改及测试，喜欢请Star⭐️
 
 Step 1. Add it in your root build.gradle at the end of repositories:
 
@@ -64,7 +67,8 @@ Step 2. Add the dependency
                         Trigger().also {
                             it.id = "test3"
                         })
-                        
+              
+//这里举一个按序弹窗的例子，也许这些弹窗所需数据来自不同的接口，你可以在任何位置任何时候attach，触发器会按注册顺序执行
        trigger?.attach("test3", object : Trigger.Strike {
             override fun strike() {
                 trigger?.response()
