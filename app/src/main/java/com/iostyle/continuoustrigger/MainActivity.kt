@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        // 应用于dialog的阻塞模式
         trigger = ContinuousTrigger.Builder()
             .with(
                 Trigger().also {
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             .with(
                 Trigger().also {
                     it.id = "test2"
+                    // 应用于dialog的阻塞模式
                     it.chokeMode = true
                 }
             )
