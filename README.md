@@ -15,96 +15,85 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-		implementation 'com.github.iostyle:ContinuousTrigger:1.0.2'
+		implementation 'com.github.iostyle:ContinuousTrigger:1.0.3'
 	}
   
-## Method
-|属性/方法|描述|
-|--|--|
+## Attribute & Method
+|attribute|description|
+|:--:|--|
 |id|唯一标识符，用来注册/绑定触发器|
 |timeout|超时时间，当前节点超时时间内没有attach将跳转到下一节点，默认值为-1|
+|chokeMode|阻塞模式，开启阻塞模式后需要在**你的业务逻辑**处理完成后手动调用next|
+
+|method|description|
+|:--:|--|
 |with|Builder模式构造注册|
 |create|Builder模式创建实例并初始化|
 |register|实例化方式有序注册|
 |attach|根据ID绑定触发器|
-|next|下一步|
-|cancel|根据ID取消对应触发器，如果是当前阻塞则自动执行下一个|
-|response|响应并关闭超时线程|
+|next|下一步(阻塞模式下需手动调用)|
+|cancel|根据ID取消对应触发器，如果是当前节点则自动执行下一个|
+|~~response~~|~~响应并关闭超时线程~~(V1.0.3版本移除)|
 |clear|清空|
+
+## Version Log
+* V 1.0.3 
+   - 节点级别添加阻塞模式控制 
+   - 移除response方法 降低代码侵入性
 
 ## Example
 ```
-      trigger = ContinuousTrigger.Builder()
-                .with(
-                        Trigger().also {
-                            it.id = "test1"
-                            it.timeout = 2000
-                        }
-                )
-                .with(
-                        Trigger().also {
-                            it.id = "test2"
-                            it.timeout = 2000
-                        }
-                )
-                .with(
-                        Trigger().also { it.id = "test3" }
-                ).create()
-      
-      //或者直接实例化使用
-      trigger = ContinuousTrigger()
-                .register(
-                        Trigger().also {
-                            it.id = "test1"
-                            it.timeout = 2000
-                        })
-                .register(
-                        Trigger().also {
-                            it.id = "test2"
-                            it.timeout = 2000
-                        })
-                .register(
-                        Trigger().also {
-                            it.id = "test3"
-                        })
-              
-//这里举一个按序弹窗的例子，也许这些弹窗所需数据来自不同的接口，你可以在任何位置任何时候attach，触发器会按注册顺序执行
-       trigger?.attach("test3", object : Trigger.Strike {
-            override fun strike() {
-                trigger?.response()
-                AlertDialog.Builder(this@MainActivity).setMessage("test3").setOnDismissListener {
-                    trigger?.next()
-                }.show()
-            }
-        })           
-       
-       GlobalScope.launch {
+	trigger = ContinuousTrigger.Builder()
+            .with(
+                Trigger().also {
+                    it.id = "test1"
+                    it.timeout = 2000
+                }
+            )
+            .with(
+                Trigger().also {
+                    it.id = "test2"
+                    // 应用于dialog的阻塞模式
+                    it.chokeMode = true
+                }
+            )
+            .with(
+                Trigger().also {
+                    it.id = "test3"
+                    it.timeout = 2000
+                }
+            )
+            .create()
+
+        GlobalScope.launch {
             delay(1500)
             withContext(Dispatchers.Main) {
                 trigger?.attach("test1", object : Trigger.Strike {
                     override fun strike() {
-                        trigger?.response()
-                        AlertDialog.Builder(this@MainActivity).setMessage("test1").setOnDismissListener {
-                            trigger?.next()
-                        }.show()
+                        Log.e("trigger", "test1")
                     }
                 })
             }
         }
 
+        trigger?.attach("test2", object : Trigger.Strike {
+            override fun strike() {
+                Log.e("trigger", "test2")
+                AlertDialog.Builder(this@MainActivity).setMessage("test2")
+                    .setOnDismissListener {
+                        trigger?.next()
+                    }.show()
+            }
+        })
 
         GlobalScope.launch {
             delay(6000)
             withContext(Dispatchers.Main) {
-                trigger?.attach("test2", object : Trigger.Strike {
+                trigger?.attach("test3", object : Trigger.Strike {
                     override fun strike() {
-                        trigger?.response()
-                        AlertDialog.Builder(this@MainActivity).setMessage("test2").setOnDismissListener {
-                            trigger?.next()
-                        }.show()
+                        Log.e("trigger", "test3")
                     }
                 })
             }
         }
-
 ```
