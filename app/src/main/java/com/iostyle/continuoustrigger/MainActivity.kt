@@ -30,95 +30,50 @@ class MainActivity : AppCompatActivity() {
             .with(
                 Trigger().also {
                     it.id = "test2"
-                    it.timeout = 2000
+                    it.chokeMode = true
                 }
             )
             .with(
-                Trigger().also { it.id = "test3" }
+                Trigger().also {
+                    it.id = "test3"
+                    it.timeout = 2000
+                }
             )
-            .openChokeMode().create()
+            .create()
 
         GlobalScope.launch {
             delay(1500)
             withContext(Dispatchers.Main) {
                 trigger?.attach("test1", object : Trigger.Strike {
                     override fun strike() {
-                        trigger?.response()
-                        AlertDialog.Builder(this@MainActivity).setMessage("test1")
-                            .setOnDismissListener {
-                                trigger?.next()
-                            }.show()
+                        Log.e("trigger", "test1")
                     }
                 })
             }
         }
+
+        trigger?.attach("test2", object : Trigger.Strike {
+            override fun strike() {
+                Log.e("trigger", "test2")
+                trigger?.response()
+                AlertDialog.Builder(this@MainActivity).setMessage("test2")
+                    .setOnDismissListener {
+                        trigger?.next()
+                    }.show()
+            }
+        })
 
         GlobalScope.launch {
             delay(6000)
             withContext(Dispatchers.Main) {
-                trigger?.attach("test2", object : Trigger.Strike {
+                trigger?.attach("test3", object : Trigger.Strike {
                     override fun strike() {
-                        trigger?.response()
-                        AlertDialog.Builder(this@MainActivity).setMessage("test2")
-                            .setOnDismissListener {
-                                trigger?.next()
-                            }.show()
+                        Log.e("trigger", "test3")
                     }
                 })
             }
         }
 
-        trigger?.attach("test3", object : Trigger.Strike {
-            override fun strike() {
-                trigger?.response()
-                AlertDialog.Builder(this@MainActivity).setMessage("test3").setOnDismissListener {
-                    trigger?.next()
-                }.show()
-            }
-        })
-
-        // 不需要阻塞的全自动模式
-        val logTrigger = ContinuousTrigger.Builder()
-            .with(
-                Trigger().also {
-                    it.id = "log1"
-                    it.timeout = 2000
-                }
-            )
-            .with(
-                Trigger().also {
-                    it.id = "log2"
-                    it.timeout = 2000
-                }
-            )
-            .with(
-                Trigger().also { it.id = "log3" }
-            )
-            .create()
-
-        logTrigger.attach("log3", object : Trigger.Strike {
-            override fun strike() {
-                Log.e("trigger","log3")
-            }
-        })
-
-        GlobalScope.launch {
-            delay(1500)
-            logTrigger.attach("log1", object : Trigger.Strike {
-                override fun strike() {
-                    Log.e("trigger","log1")
-                }
-            })
-        }
-
-        GlobalScope.launch {
-            delay(6000)
-            logTrigger.attach("log2", object : Trigger.Strike {
-                override fun strike() {
-                    Log.e("trigger","log2")
-                }
-            })
-        }
     }
 
     override fun onDestroy() {

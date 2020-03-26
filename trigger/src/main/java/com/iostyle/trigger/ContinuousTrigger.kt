@@ -15,37 +15,23 @@ class ContinuousTrigger {
     private var blockNode: Trigger? = null
     private var debugMode = false
 
-    //是否开启阻塞模式
-    var chokeMode = false
-
     constructor()
 
     constructor(triggerList: ConcurrentLinkedQueue<Trigger>?) {
         this.triggerList = triggerList
     }
 
-    constructor(triggerList: ConcurrentLinkedQueue<Trigger>?, chokeMode: Boolean) {
-        this.triggerList = triggerList
-        this.chokeMode = chokeMode
-    }
-
 
     class Builder {
         private var triggerList = ConcurrentLinkedQueue<Trigger>()
-        private var chokeMode = false
 
         fun with(trigger: Trigger): Builder {
             triggerList.offer(trigger)
             return this
         }
 
-        fun openChokeMode(): Builder {
-            chokeMode = true
-            return this
-        }
-
         fun create(): ContinuousTrigger {
-            return ContinuousTrigger(triggerList, chokeMode).also {
+            return ContinuousTrigger(triggerList).also {
                 it.next()
             }
         }
@@ -84,7 +70,7 @@ class ContinuousTrigger {
     private fun tryWakeUp(id: String, strike: Trigger.Strike): Boolean {
         if (isCurrentNode(id)) {
             strike.strike()
-            if (!chokeMode) next()
+            if (blockNode?.chokeMode == false) next()
             return true
         }
         return false

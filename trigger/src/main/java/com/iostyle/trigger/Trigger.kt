@@ -10,6 +10,9 @@ class Trigger {
 
     var strike: Strike? = null
 
+    //阻塞模式
+    var chokeMode = false
+
     interface Strike {
         fun strike()
     }
