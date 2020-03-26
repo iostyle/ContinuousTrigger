@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         trigger?.attach("test2", object : Trigger.Strike {
             override fun strike() {
                 Log.e("trigger", "test2")
-                trigger?.response()
                 AlertDialog.Builder(this@MainActivity).setMessage("test2")
                     .setOnDismissListener {
                         trigger?.next()

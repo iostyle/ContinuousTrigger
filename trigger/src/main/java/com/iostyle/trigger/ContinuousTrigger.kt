@@ -69,6 +69,7 @@ class ContinuousTrigger {
 
     private fun tryWakeUp(id: String, strike: Trigger.Strike): Boolean {
         if (isCurrentNode(id)) {
+            currentJob?.cancel()
             strike.strike()
             if (blockNode?.chokeMode == false) next()
             return true
@@ -123,11 +124,6 @@ class ContinuousTrigger {
             if (debugMode) log("ContinuousTrigger cancel next $id")
             next()
         }
-    }
-
-    //响应 关闭超时线程 持续等待
-    fun response() {
-        currentJob?.cancel()
     }
 
     //清空
