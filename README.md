@@ -42,7 +42,7 @@ Step 2. Add the dependency
    - 移除response方法 降低代码侵入性
 
 ## Example
-```
+```kotlin
 	trigger = ContinuousTrigger.Builder()
             .with(
                 Trigger().also {
