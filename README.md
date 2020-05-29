@@ -15,7 +15,7 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-		implementation 'com.github.iostyle:ContinuousTrigger:1.0.3'
+		implementation 'com.github.iostyle:ContinuousTrigger:x.y.z'
 	}
   
 ## Attribute & Method
@@ -40,9 +40,14 @@ Step 2. Add the dependency
 * V 1.0.3 
    - 节点级别添加阻塞模式控制 
    - 移除response方法 降低代码侵入性
+* V 1.0.4
+   - 支持DSL语法
 
 ## Example
 ```kotlin
+	/**
+         * 链式调用写法
+         */
 	trigger = ContinuousTrigger.Builder()
             .with(
                 Trigger().also {
@@ -64,6 +69,24 @@ Step 2. Add the dependency
                 }
             )
             .create()
+	    
+	/**
+         * DSL写法
+         */
+        val t0 = Trigger().also {
+            it.id = "test1"
+            it.timeout = 2000
+        }
+        val t1 = Trigger().also {
+            it.id = "test2"
+            // 应用于dialog的阻塞模式
+            it.chokeMode = true
+        }
+        val t2 = Trigger().also {
+            it.id = "test3"
+            it.timeout = 2000
+        }
+        trigger = (ContinuousTrigger.Builder() with t0 with t1 with t2).create()
 
         GlobalScope.launch {
             delay(1500)
