@@ -25,7 +25,8 @@ class ContinuousTrigger {
     class Builder {
         private var triggerList = ConcurrentLinkedQueue<Trigger>()
 
-        fun with(trigger: Trigger): Builder {
+        @TriggerDSL
+        infix fun with(trigger: Trigger): Builder {
             triggerList.offer(trigger)
             return this
         }
@@ -38,7 +39,8 @@ class ContinuousTrigger {
     }
 
     //按序注册
-    fun register(trigger: Trigger): ContinuousTrigger {
+    @TriggerDSL
+    infix fun register(trigger: Trigger): ContinuousTrigger {
         if (debugMode) log("ContinuousTrigger register ${triggerList?.size}: ${trigger.id}")
         if (triggerList == null) triggerList = ConcurrentLinkedQueue<Trigger>()
         triggerList?.offer(trigger)
