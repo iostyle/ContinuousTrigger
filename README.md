@@ -45,47 +45,48 @@ Step 2. Add the dependency
 
 ## Example
 ```kotlin
-	/**
+	    /**
          * 链式调用写法
          */
-	trigger = ContinuousTrigger.Builder()
+        trigger = ContinuousTrigger.Builder()
             .with(
-                Trigger().also {
-                    it.id = "test1"
-                    it.timeout = 2000
+                Trigger().apply {
+                    id = "test1"
+                    timeout = 2000
                 }
             )
             .with(
-                Trigger().also {
-                    it.id = "test2"
+                Trigger().apply {
+                    id = "test2"
                     // 应用于dialog的阻塞模式
-                    it.chokeMode = true
+                    chokeMode = true
                 }
             )
             .with(
-                Trigger().also {
-                    it.id = "test3"
-                    it.timeout = 2000
+                Trigger().apply {
+                    id = "test3"
+                    timeout = 2000
                 }
             )
             .create()
-	    
-	/**
+
+        /**
          * DSL写法
          */
-        val t0 = Trigger().also {
-            it.id = "test1"
-            it.timeout = 2000
+        val t0 = Trigger().apply {
+            id = "test1"
+            timeout = 2000
         }
-        val t1 = Trigger().also {
-            it.id = "test2"
+        val t1 = Trigger().apply {
+            id = "test2"
             // 应用于dialog的阻塞模式
-            it.chokeMode = true
+            chokeMode = true
         }
-        val t2 = Trigger().also {
-            it.id = "test3"
-            it.timeout = 2000
+        val t2 = Trigger().apply {
+            id = "test3"
+            timeout = 2000
         }
+        
         trigger = (ContinuousTrigger.Builder() with t0 with t1 with t2).create()
 
         GlobalScope.launch {
