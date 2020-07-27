@@ -23,7 +23,13 @@ class ContinuousTrigger {
 
 
     class Builder {
+        private var name: String? = null
         private var triggerList = ConcurrentLinkedQueue<Trigger>()
+
+        constructor()
+        constructor(name: String?) {
+            this.name = name
+        }
 
         @TriggerDSL
         infix fun with(trigger: Trigger): Builder {
@@ -34,6 +40,7 @@ class ContinuousTrigger {
         fun create(): ContinuousTrigger {
             return ContinuousTrigger(triggerList).also {
                 it.next()
+                if (!name.isNullOrBlank()) saveTriggerInstance(name!!, it)
             }
         }
     }

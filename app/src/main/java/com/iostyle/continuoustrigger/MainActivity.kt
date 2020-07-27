@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import com.iostyle.trigger.ContinuousTrigger
-import com.iostyle.trigger.Trigger
+import com.iostyle.trigger.*
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -60,7 +59,8 @@ class MainActivity : AppCompatActivity() {
             id = "test3"
             timeout = 2000
         }
-        trigger = (ContinuousTrigger.Builder() with t0 with t1 with t2).create()
+        //name为可选参数 设置name后通过getTriggerInstance(name)获取实例
+        trigger = (ContinuousTrigger.Builder("myTrigger") with t0 with t1 with t2).create()
 
         GlobalScope.launch {
             delay(1500)
@@ -73,7 +73,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        trigger?.attach("test2", object : Trigger.Strike {
+        //在任何位置可以根据名字获取实例
+        getTriggerInstance("myTrigger")?.attach("test2", object : Trigger.Strike {
             override fun strike() {
                 Log.e("trigger", "test2")
                 AlertDialog.Builder(this@MainActivity).setMessage("test2")
@@ -91,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                         Log.e("trigger", "test3")
                     }
                 })
+                removeTriggerInstance("myTrigger")
             }
         }
 
@@ -99,5 +101,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         trigger?.clear()
+        clearTriggers()
     }
 }
