@@ -90,9 +90,9 @@ class MainActivity : AppCompatActivity() {
                 trigger?.attach("test3", object : Trigger.Strike {
                     override fun strike() {
                         Log.e("trigger", "test3")
+                        removeTriggerInstance("myTrigger")
                     }
                 })
-                removeTriggerInstance("myTrigger")
             }
         }
 
