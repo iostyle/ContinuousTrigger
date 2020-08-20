@@ -35,40 +35,46 @@ Step 2. Add the dependency
 |cancel|根据ID取消对应触发器，如果是当前节点则自动执行下一个|
 |~~response~~|~~响应并关闭超时线程~~(V1.0.3版本移除)|
 |clear|清空|
+|getTriggerInstance|通过主键获取实例|
+|saveTriggerInstance|缓存实例，无需手动调用，构造时传入主键即可|
+|removeTriggerInstance|从缓存中移除实例，可选是否销毁|
+|clearTriggers|清空所有缓存实例|
 
 ## Version Log
+* V 1.0.5
+   - 支持缓存，通过主键可在任何位置获取实例进行操作
+* V 1.0.4
+   - 支持DSL语法
 * V 1.0.3 
    - 节点级别添加阻塞模式控制 
    - 移除response方法 降低代码侵入性
-* V 1.0.4
-   - 支持DSL语法
 
 ## Example
 ```kotlin
 	    /**
          * 链式调用写法
          */
-        trigger = ContinuousTrigger.Builder()
-            .with(
-                Trigger().apply {
-                    id = "test1"
-                    timeout = 2000
-                }
-            )
-            .with(
-                Trigger().apply {
-                    id = "test2"
-                    // 应用于dialog的阻塞模式
-                    chokeMode = true
-                }
-            )
-            .with(
-                Trigger().apply {
-                    id = "test3"
-                    timeout = 2000
-                }
-            )
-            .create()
+//        trigger = ContinuousTrigger.Builder()
+//            .with(
+//                Trigger().apply {
+//                    id = "test1"
+//                    timeout = 2000
+//                }
+//            )
+//            .with(
+//                Trigger().apply {
+//                    id = "test2"
+//                    // 应用于dialog的阻塞模式
+//                    chokeMode = true
+//                }
+//            )
+//            .with(
+//                Trigger().apply {
+//                    id = "test3"
+//                    timeout = 2000
+//                }
+//            )
+//            .create()
 
         /**
          * DSL写法
@@ -86,8 +92,8 @@ Step 2. Add the dependency
             id = "test3"
             timeout = 2000
         }
-        
-        trigger = (ContinuousTrigger.Builder() with t0 with t1 with t2).create()
+        //name为可选参数 设置name后通过getTriggerInstance(name)获取实例
+        trigger = (ContinuousTrigger.Builder("myTrigger") with t0 with t1 with t2).create()
 
         GlobalScope.launch {
             delay(1500)
@@ -100,7 +106,8 @@ Step 2. Add the dependency
             }
         }
 
-        trigger?.attach("test2", object : Trigger.Strike {
+        //在任何位置可以根据名字获取实例
+        getTriggerInstance("myTrigger")?.attach("test2", object : Trigger.Strike {
             override fun strike() {
                 Log.e("trigger", "test2")
                 AlertDialog.Builder(this@MainActivity).setMessage("test2")
