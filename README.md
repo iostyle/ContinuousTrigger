@@ -54,34 +54,34 @@ Step 2. Add the dependency
 
 ## Kotlin
 ```kotlin
-	/**
-         * 链式调用写法
-         */
-//        trigger = ContinuousTrigger.Builder()
-//            .with(
-//                Trigger().apply {
-//                    id = "test1"
-//                    timeout = 2000
-//                }
-//            )
-//            .with(
-//                Trigger().apply {
-//                    id = "test2"
-//                    // 应用于dialog的阻塞模式
-//                    chokeMode = true
-//                }
-//            )
-//            .with(
-//                Trigger().apply {
-//                    id = "test3"
-//                    timeout = 2000
-//                }
-//            )
-//            .create()
 
-        /**
-         * DSL写法
-         */
+        //链式调用写法
+        
+        trigger = ContinuousTrigger.Builder()
+            .with(
+                Trigger().apply {
+                    id = "test1"
+                    timeout = 2000
+                }
+            )
+            .with(
+                Trigger().apply {
+                    id = "test2"
+                    // 应用于dialog的阻塞模式
+                    chokeMode = true
+                }
+            )
+            .with(
+                Trigger().apply {
+                    id = "test3"
+                    timeout = 2000
+                }
+            )
+            .create()
+
+
+        //DSL写法
+
         val t0 = Trigger().apply {
             id = "test1"
             timeout = 2000
@@ -95,6 +95,7 @@ Step 2. Add the dependency
             id = "test3"
             timeout = 2000
         }
+	
         //name为可选参数 设置name后通过getTriggerInstance(name)获取实例
         trigger = (ContinuousTrigger.Builder("myTrigger") with t0 with t1 with t2).create()
 
