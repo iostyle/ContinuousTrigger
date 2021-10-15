@@ -16,9 +16,8 @@ Step 2. Add the dependency
 
 	dependencies {
 		implementation 'com.github.iostyle:ContinuousTrigger:1.0.6'
-
-		//自1.0.6版本开始，项目中的依赖方式修改为compileOnly，你需要确保自己的项目中引入了相关的依赖
-        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x'
+		//自1.0.6版本开始，项目中的依赖方式修改为compileOnly，你需要确保自己的项目中引入了相关的依赖 
+		implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x'
 	}
   
 ## Attribute & Method
@@ -34,7 +33,7 @@ Step 2. Add the dependency
 |create|Builder模式创建实例并初始化|
 |register|实例化方式有序注册|
 |attach|根据ID绑定触发器|
-|adjustAttach|灵活绑定 since V1.0.6|
+|adjustAttach|灵活绑定 (since V1.0.6)|
 |next|下一步(阻塞模式下需手动调用)|
 |cancel|根据ID取消对应触发器，如果是当前节点则自动执行下一个|
 |~~response~~|~~响应并关闭超时线程~~(V1.0.3版本移除)|
@@ -47,7 +46,7 @@ Step 2. Add the dependency
 ## Version Log
 * V 1.0.6
    - 支持灵活绑定，无需注册，适用于无顺序要求场景灵活执行
-   - 替换项目中组件的依赖方式为compileOnly，减少侵入性
+   - 替换项目中组件的依赖方式为compileOnly，减少侵入性  
      同时注意从这个版本开始，集成方式有所改变，你需要确保自己的项目中引入了相关的依赖
 * V 1.0.5
    - 支持缓存，通过主键可在任何位置获取实例进行操作
