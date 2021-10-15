@@ -278,3 +278,8 @@ Step 2. Add the dependency
             }
         }).start();
 ```
+## 一起干杯 🍺~(￣▽￣)~*
+<div>
+<img width=240 height=360 src="https://user-images.githubusercontent.com/22219146/137454802-6bcd5ee2-f529-4f9b-abfe-f7b995c53fea.png" />
+<img width=248 height=337 src="https://user-images.githubusercontent.com/22219146/137454813-3f6e312d-00f6-46ef-b213-00ad6bc6a5c8.png" />
+</div>
