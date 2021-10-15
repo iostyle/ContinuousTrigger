@@ -15,7 +15,10 @@ Step 1. Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-		implementation 'com.github.iostyle:ContinuousTrigger:1.0.5'
+		implementation 'com.github.iostyle:ContinuousTrigger:1.0.6'
+
+		//自1.0.6版本开始，项目中的依赖方式修改为compileOnly，你需要确保自己的项目中引入了相关的依赖
+        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x'
 	}
   
 ## Attribute & Method
@@ -31,6 +34,7 @@ Step 2. Add the dependency
 |create|Builder模式创建实例并初始化|
 |register|实例化方式有序注册|
 |attach|根据ID绑定触发器|
+|adjustAttach|灵活绑定 since V1.0.6|
 |next|下一步(阻塞模式下需手动调用)|
 |cancel|根据ID取消对应触发器，如果是当前节点则自动执行下一个|
 |~~response~~|~~响应并关闭超时线程~~(V1.0.3版本移除)|
@@ -41,6 +45,10 @@ Step 2. Add the dependency
 |clearTriggers|清空所有缓存实例|
 
 ## Version Log
+* V 1.0.6
+   - 支持灵活绑定，无需注册，适用于无顺序要求场景灵活执行
+   - 替换项目中组件的依赖方式为compileOnly，减少侵入性
+     同时注意从这个版本开始，集成方式有所改变，你需要确保自己的项目中引入了相关的依赖
 * V 1.0.5
    - 支持缓存，通过主键可在任何位置获取实例进行操作
 * V 1.0.4
@@ -55,8 +63,10 @@ Step 2. Add the dependency
 ## Kotlin
 ```kotlin
 
-        //链式调用写法
-        
+        /**
+         * 链式调用写法
+         */
+
         trigger = ContinuousTrigger.Builder()
             .with(
                 Trigger().apply {
@@ -79,8 +89,9 @@ Step 2. Add the dependency
             )
             .create()
 
-
-        //DSL写法
+        /**
+         * DSL写法
+         */
 
         val t0 = Trigger().apply {
             id = "test1"
@@ -131,6 +142,46 @@ Step 2. Add the dependency
                 })
             }
         }
+
+        /**
+         * 灵活绑定写法
+         */
+        saveTriggerInstance("adjustTrigger")
+
+        getTriggerInstance("adjustTrigger")?.run {
+            adjustAttach("t1", object : Trigger.Strike {
+                override fun strike() {
+                    Log.e("trigger", "t1")
+                    AlertDialog.Builder(this@MainActivity).setMessage("t1")
+                        .setOnDismissListener {
+                            next()
+                        }.show()
+                }
+            }, true)
+        }
+
+        getTriggerInstance("adjustTrigger")?.run {
+            adjustAttach(
+                "t2", object : Trigger.Strike {
+                    override fun strike() {
+                        Log.e("trigger", "t2")
+                        GlobalScope.launch {
+                            delay(1000)
+                            next()
+                        }
+                    }
+                }, true
+            )
+        }
+
+        getTriggerInstance("adjustTrigger")?.adjustAttach(
+            "t3",
+            object : Trigger.Strike {
+                override fun strike() {
+                    Log.e("trigger", "t3")
+                }
+            },
+        )
 ```
 
 ## Java
