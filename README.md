@@ -44,6 +44,10 @@ Step 2. Add the dependency
 |clearTriggers|清空所有缓存实例|
 
 ## Version Log
+* V 1.0.7 前瞻
+   - 支持一键生成jar包
+   - saveTriggerInstance 方法新增返回实例
+   - ..
 * V 1.0.6
    - 支持灵活绑定，无需注册，适用于无顺序要求场景灵活执行
    - 替换项目中组件的依赖方式为compileOnly，减少侵入性  
