@@ -8,11 +8,14 @@ fun getTriggerInstance(name: String): ContinuousTrigger? {
     return continuousTriggers?.get(name)
 }
 
-fun saveTriggerInstance(name: String, continuousTrigger: ContinuousTrigger? = null) {
+fun saveTriggerInstance(
+    name: String,
+    continuousTrigger: ContinuousTrigger? = null
+): ContinuousTrigger {
     if (continuousTriggers == null) {
         continuousTriggers = ConcurrentHashMap()
     }
-    continuousTriggers?.put(name, continuousTrigger ?: ContinuousTrigger())
+    return continuousTriggers!!.put(name, continuousTrigger ?: ContinuousTrigger())!!
 }
 
 fun removeTriggerInstance(name: String): ContinuousTrigger? {
