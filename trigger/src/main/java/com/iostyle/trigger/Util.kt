@@ -15,7 +15,9 @@ fun saveTriggerInstance(
     if (continuousTriggers == null) {
         continuousTriggers = ConcurrentHashMap()
     }
-    return continuousTriggers!!.put(name, continuousTrigger ?: ContinuousTrigger())!!
+    val trigger = continuousTrigger ?: ContinuousTrigger()
+    continuousTriggers?.put(name, trigger)
+    return trigger
 }
 
 fun removeTriggerInstance(name: String): ContinuousTrigger? {
