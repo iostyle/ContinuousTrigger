@@ -34,7 +34,7 @@ Step 2. Add the dependency
 |register|实例化方式有序注册|
 |attach|根据ID绑定触发器|
 |adjustAttach|灵活绑定 (since V1.0.6)|
-|next|下一步(阻塞模式下需手动调用)|
+|next|下一步(阻塞模式下需手动调用),更建议使用cancel传入当前节点ID|
 |cancel|根据ID取消对应触发器，如果是当前节点则自动执行下一个|
 |~~response~~|~~响应并关闭超时线程~~(V1.0.3版本移除)|
 |clear|清空|
@@ -47,6 +47,7 @@ Step 2. Add the dependency
 * V 1.0.7 前瞻
    - 支持一键生成jar包
    - saveTriggerInstance 方法新增返回实例
+   - next 方法过时，推荐使用cancel结束当前阻塞节点并自动触达下一个节点
    - ..
 * V 1.0.6
    - 支持灵活绑定，无需注册，适用于无顺序要求场景灵活执行
