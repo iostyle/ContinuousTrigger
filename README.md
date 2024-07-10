@@ -25,7 +25,7 @@ Step 2. Add the dependency
 |:--:|--|
 |id|唯一标识符，用来注册/绑定触发器|
 |timeout|超时时间，当前节点超时时间内没有attach将跳转到下一节点，默认值为-1|
-|chokeMode|阻塞模式，开启阻塞模式后需要在**你的业务逻辑**处理完成后手动调用next|
+|chokeMode|阻塞模式，开启阻塞模式后需要在**你的业务逻辑**处理完成后手动调用next或cancel|
 
 |method|description|
 |:--:|--|
